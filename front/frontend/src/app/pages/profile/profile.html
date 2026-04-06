@@ -1,0 +1,87 @@
+<div class="profile-page">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar">
+        <span class="avatar-icon">👤</span>
+      </div>
+      <div class="profile-details">
+        <h2>{{ name || 'Your Profile' }}</h2>
+        <p class="subtitle" *ngIf="userEmail">{{ userEmail }}</p>
+      </div>
+    </div>
+    <hr class="divider" />
+    <div class="profile-info">
+      <h3 class="section-title">Profile Info</h3>
+      <form *ngIf="editMode" (ngSubmit)="saveProfile()">
+        <div class="form-row">
+          <span class="form-icon">📝</span>
+          <label>Name:</label>
+          <input type="text" [(ngModel)]="name" name="name" required>
+        </div>
+        <div class="form-row">
+          <span class="form-icon">📞</span>
+          <label>Phone:</label>
+          <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" required>
+        </div>
+        <div class="form-row">
+          <span class="form-icon">🏠</span>
+          <label>Address:</label>
+          <input type="text" [(ngModel)]="address" name="address" required>
+        </div>
+        <div class="form-row">
+          <span class="form-icon">🌆</span>
+          <label>City:</label>
+          <input type="text" [(ngModel)]="city" name="city" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">💾 Save</button>
+          <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+      <div *ngIf="!editMode" class="info-view">
+        <div class="info-row"><span class="info-label"><span class="row-icon">📝</span>Name:</span> <span>{{ name }}</span></div>
+        <div class="info-row"><span class="info-label"><span class="row-icon">📞</span>Phone:</span> <span>{{ phoneNumber }}</span></div>
+        <div class="info-row"><span class="info-label"><span class="row-icon">🏠</span>Address:</span> <span>{{ address }}</span></div>
+        <div class="info-row"><span class="info-label"><span class="row-icon">🌆</span>City:</span> <span>{{ city }}</span></div>
+        <button class="edit-btn" (click)="enableEdit()">✏️ Edit</button>
+      </div>
+      <div *ngIf="profileError" class="error">{{ profileError }}</div>
+    </div>
+    <hr class="divider" />
+    <div class="actions">
+      <h3 class="section-title">Account Actions</h3>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+      <button class="change-password-btn" (click)="openChangePasswordModal()">Change Password</button>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal" *ngIf="showChangePasswordModal">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeChangePasswordModal()" aria-label="Close">&times;</button>
+      <h3>Change Password</h3>
+      <form (ngSubmit)="changePassword()">
+        <div class="form-row">
+          <span class="form-icon">🔒</span>
+          <label>Current Password:</label>
+          <input type="password" [(ngModel)]="currentPassword" name="currentPassword" required>
+        </div>
+        <div class="form-row">
+          <span class="form-icon">🔑</span>
+          <label>New Password:</label>
+          <input type="password" [(ngModel)]="newPassword" name="newPassword" required>
+        </div>
+        <div class="form-row">
+          <span class="form-icon">🔑</span>
+          <label>Repeat New Password:</label>
+          <input type="password" [(ngModel)]="repeatNewPassword" name="repeatNewPassword" required>
+        </div>
+        <div *ngIf="passwordError" class="error">{{ passwordError }}</div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">💾 Save</button>
+          <button type="button" class="cancel-btn" (click)="closeChangePasswordModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="admin-container">
+  <!-- REGISTRATION REQUESTS -->
+  <h2>Registration Requests</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Status</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let req of requests">
+      <td>{{ req.email }}</td>
+      <td>{{ req.address }}</td>
+      <td>{{ req.status }}</td>
+      <td>{{ req.createdAt }}</td>
+      <td>
+        <ng-container *ngIf="req.status === 'PENDING'">
+          <button (click)="acceptRequest(req.email)">Accept</button>
+          <button (click)="openReject(req.email)">Reject</button>
+        </ng-container>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="selectedEmail" class="reject-dialog">
+    <h3>Reject Request</h3>
+    <form [formGroup]="rejectForm" (ngSubmit)="reject()">
+      <textarea formControlName="reason" placeholder="Enter reason..." rows="3"></textarea>
+      <div class="buttons">
+        <button type="submit">Confirm Reject</button>
+        <button type="button" (click)="cancelReject()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <hr>
+
+  <!-- EVENTS -->
+  <h2>Manage Events</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
+    <input formControlName="name" placeholder="Name">
+    <input formControlName="type" placeholder="Type">
+    <input formControlName="address" placeholder="Address">
+    <input formControlName="date" type="date">
+    <input formControlName="price" placeholder="Price" type="number">
+    <input formControlName="locationId" placeholder="Location ID" type="number">
+    <button type="submit">{{ editingEvent ? 'Update' : 'Create' }}</button>
+    <button type="button" (click)="cancelEventEdit()" *ngIf="editingEvent">Cancel</button>
+  </form>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Address</th><th>Date</th><th>Price</th><th>Location ID</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ev of events">
+      <td>{{ ev.name }}</td><td>{{ ev.type }}</td><td>{{ ev.address }}</td>
+      <td>{{ ev.date }}</td><td>{{ ev.price }}</td><td>{{ ev.locationId }}</td>
+      <td>
+        <button (click)="editEvent(ev)">Edit</button>
+        <button (click)="deleteEvent(ev.id!)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- LOCATIONS -->
+  <h2>Manage Locations</h2>
+  <form [formGroup]="locationForm" (ngSubmit)="saveLocation()">
+    <input formControlName="name" placeholder="Name">
+    <input formControlName="address" placeholder="Address">
+    <input formControlName="type" placeholder="Type">
+    <button type="submit">{{ editingLocation ? 'Update' : 'Create' }}</button>
+    <button type="button" (click)="cancelLocationEdit()" *ngIf="editingLocation">Cancel</button>
+  </form>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th><th>Address</th><th>Type</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let loc of locations">
+      <td>{{ loc.name }}</td><td>{{ loc.address }}</td><td>{{ loc.type }}</td>
+      <td>
+        <button (click)="editLocation(loc)">Edit</button>
+        <button (click)="deleteLocation(loc.id!)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

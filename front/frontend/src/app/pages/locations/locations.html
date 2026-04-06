@@ -1,0 +1,106 @@
+<div class="locations-page-container">
+  <header class="locations-header">
+    <h1 class="locations-title">Istraži <span class="highlight">Mesta</span></h1>
+    <p class="locations-tagline">Otkrij sve lokacije i objekte u Novom Sadu</p>
+  </header>
+
+  <section class="locations-section">
+    <div class="locations-container">
+      <h2 class="locations-title">Sva mesta</h2>
+      <div class="location-filters">
+        <input type="text" placeholder="Pretraga po nazivu" [(ngModel)]="filterName" />
+        <input type="text" placeholder="Pretraga po adresi" [(ngModel)]="filterAddress" />
+        <input type="text" placeholder="Pretraga po tipu" [(ngModel)]="filterType" />
+        <button (click)="filterLocations()">Pretraži</button>
+      </div>
+      <div *ngIf="locations.length > 0; else noLocations">
+        <ul class="locations-list">
+          <li *ngFor="let location of locations" class="location-item">
+            <h3>{{ location.name }}</h3>
+            <p><strong>Adresa:</strong> {{ location.address }}</p>
+            <p><strong>Tip:</strong> {{ location.type }}</p>
+            <p><strong>Opis:</strong> {{ location.description }}</p>
+            <p><strong>Prosečna ocena:</strong> {{ location.totalRating || 'Nema ocena' }}</p>
+            <button class="review-btn" (click)="openReviewModal(location)">⭐ Ostavi utisak</button>
+          </li>
+        </ul>
+      </div>
+      <ng-template #noLocations>
+        <p>Nema mesta za prikaz.</p>
+      </ng-template>
+    </div>
+  </section>
+
+  <!-- Review Modal -->
+  <div class="modal" *ngIf="showReviewModal">
+    <div class="modal-content review-modal">
+      <button class="close-btn" (click)="closeReviewModal()" aria-label="Close">&times;</button>
+      <h3>Utisak za: {{ selectedLocation?.name }}</h3>
+
+      <!-- Review Form -->
+      <div class="review-form">
+        <h4>Ostavi svoj utisak</h4>
+
+        <div class="form-row">
+          <label>Događaj (opciono):</label>
+          <select [(ngModel)]="selectedEventId" name="event">
+            <option [value]="null">-- Izaberi događaj --</option>
+            <option *ngFor="let event of events" [value]="event.id">{{ event.name }} - {{ event.date }}</option>
+          </select>
+        </div>
+
+        <div class="rating-section">
+          <div class="form-row rating-row">
+            <label>Nastup (1-10):</label>
+            <input type="number" min="1" max="10" [(ngModel)]="performanceRating" name="performance">
+          </div>
+
+          <div class="form-row rating-row">
+            <label>Zvuk i svetlo (1-10):</label>
+            <input type="number" min="1" max="10" [(ngModel)]="soundLightRating" name="soundLight">
+          </div>
+
+          <div class="form-row rating-row">
+            <label>Prostor (1-10):</label>
+            <input type="number" min="1" max="10" [(ngModel)]="spaceRating" name="space">
+          </div>
+
+          <div class="form-row rating-row">
+            <label>Ukupan utisak (1-10):</label>
+            <input type="number" min="1" max="10" [(ngModel)]="overallRating" name="overall">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Komentar (opciono):</label>
+          <textarea [(ngModel)]="comment" name="comment" rows="3" placeholder="Napišite svoj komentar..."></textarea>
+        </div>
+
+        <div *ngIf="reviewError" class="error">{{ reviewError }}</div>
+
+        <div class="form-actions">
+          <button type="button" class="save-btn" (click)="submitReview()">💾 Pošalji</button>
+          <button type="button" class="cancel-btn" (click)="closeReviewModal()">Otkaži</button>
+        </div>
+      </div>
+
+      <!-- Existing Reviews -->
+      <div class="reviews-list" *ngIf="reviews.length > 0">
+        <h4>Utisci korisnika</h4>
+        <div *ngFor="let review of reviews" class="review-item">
+          <div class="review-header">
+            <strong>{{ review.userName }}</strong>
+            <span class="review-date">{{ review.createdAt | date: 'short' }}</span>
+          </div>
+          <div class="review-ratings">
+            <span *ngIf="review.rate?.performance">Nastup: {{ review.rate.performance }}/10</span>
+            <span *ngIf="review.rate?.soundAndLighting">Zvuk/Svetlo: {{ review.rate.soundAndLighting }}/10</span>
+            <span *ngIf="review.rate?.venue">Prostor: {{ review.rate.venue }}/10</span>
+            <span *ngIf="review.rate?.overallImpression">Ukupno: {{ review.rate.overallImpression }}/10</span>
+          </div>
+          <p *ngIf="review.comment" class="review-comment">{{ review.comment }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

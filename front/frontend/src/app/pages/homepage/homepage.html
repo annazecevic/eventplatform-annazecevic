@@ -1,0 +1,52 @@
+<div class="app-container">
+
+
+
+  <div class="user-status">
+    <p *ngIf="isLoggedIn" class="status-message">Prijavljeni ste kao: <strong>{{ username }}</strong></p>
+    <p *ngIf="!isLoggedIn" class="status-message status-message--not-logged-in">Niste prijavljeni.</p>
+  </div>
+
+  <section class="events-section">
+    <h2 class="section-title">Događaji koji se dešavaju danas:</h2>
+
+    <div class="event-filters">
+      <input type="text" placeholder="Pretraga po nazivu" [(ngModel)]="filterName" (input)="filterEvents()" />
+      <input type="text" placeholder="Filtriraj po tipu" [(ngModel)]="filterType" (input)="filterEvents()" />
+      <input type="text" placeholder="Filtriraj po adresi" [(ngModel)]="filterAddress" (input)="filterEvents()" />
+      <input type="number" min="0" placeholder="Maksimalna cena (RSD)" [(ngModel)]="filterPrice" (input)="filterEvents()" />
+    </div>
+
+    <div class="event-cards-container" *ngIf="filteredEvents && filteredEvents.length > 0; else noEvents">
+      <div class="event-card" *ngFor="let event of filteredEvents">
+        <div class="event-card__image">
+          <img src="https://picsum.photos/400/250?random={{event.id}}" alt="Slika za {{ event.name }}">
+        </div>
+        <div class="event-card__content">
+          <h3 class="event-card__title">{{ event.name }}</h3>
+          <p class="event-card__meta">
+            <span class="event-card__icon material-icons">Adresa</span> {{ event.address }}
+          </p>
+          <p class="event-card__meta">
+            <span class="event-card__icon material-icons">Tip</span> {{ event.type }}
+          </p>
+          <p class="event-card__meta">
+            <span class="event-card__icon material-icons">Datum</span> {{ event.date | date: 'dd.MM.yyyy HH:mm' }}
+          </p>
+          <div class="event-card__footer">
+            <span class="event-card__price" [ngClass]="{'event-card__price--free': event.price === 0}">
+              {{ event.price === 0 ? 'Besplatno' : (event.price + ' RSD') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noEvents>
+      <div class="no-events-message">
+        <p>Trenutno nema događaja za danas. Pratite nas za nove objave!</p>
+        <img src="https://picsum.photos/300/200?grayscale" alt="Nema događaja">
+      </div>
+    </ng-template>
+  </section>
+</div>

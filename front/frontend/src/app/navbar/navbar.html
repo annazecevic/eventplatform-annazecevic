@@ -1,0 +1,13 @@
+<header class="app-header">
+  <h1 class="app-title" (click)="goToHomePage()" >Novi Sad <span class="highlight">Now</span></h1>
+  <p class="app-tagline">Vaš vodič kroz gradske događaje</p>
+  <nav class="app-nav">
+    <button class="nav-button" (click)="goToLocations()">Mesta</button>
+    <button class="nav-button" *ngIf="!isLoggedIn" (click)="goToLogin()">Prijava</button>
+    <button class="nav-button" *ngIf="!isLoggedIn" (click)="goToRegister()">Registracija</button>
+    <button class="nav-button" *ngIf="isLoggedIn" (click)="goToProfile()">Profil</button>
+    <button class="nav-button nav-button--logout" *ngIf="isLoggedIn" (click)="logout()">Odjava</button>
+  </nav>
+</header>
+
+

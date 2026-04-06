@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Khand:wght@400;500;600;700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Khand', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+.toast-title, .toast-message {
+  font-family: 'Khand', sans-serif;
+  font-size: 1.1rem;
+}
